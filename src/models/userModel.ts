@@ -37,3 +37,9 @@ export const updateUser = (id: string, user: Omit<IUser, 'id'>) =>
     }
     res(users[index]);
   });
+
+export const deleteUser = (id: string): Promise<void> =>
+  new Promise((res) => {
+    users.filter((u) => u.id !== id);
+    res();
+  });

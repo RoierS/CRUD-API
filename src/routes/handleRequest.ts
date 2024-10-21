@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import {
   addNewUser,
+  deleteUserById,
   getAllUsers,
   getUserById,
   updateUserById,
@@ -41,6 +42,13 @@ export const handleRequest = (
       urlArray[2] === 'users' &&
       urlArray.length === 4:
       updateUserById(request, response, id);
+      break;
+
+    case method === 'DELETE' &&
+      urlArray[1] === 'api' &&
+      urlArray[2] === 'users' &&
+      urlArray.length === 4:
+      deleteUserById(response, id);
       break;
 
     default:

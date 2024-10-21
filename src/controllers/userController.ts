@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'node:http';
 import { validate as isUuid } from 'uuid';
 import {
   createUser,
+  deleteUser,
   findAllUsers,
   findUserById,
   updateUser,
@@ -99,6 +100,30 @@ export const updateUserById = async (
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(newUser));
+  } catch (error) {
+    if (error instanceof Error && error.message === 'User not found') {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ message: 'User not found' }));
+    }
+    console.log(error);
+  }
+};
+
+export const deleteUserById = async (res: ServerResponse, id: string) => {
+  try {
+    if (!isUuid(id)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ message: 'Not valid UUID' }));
+    }
+
+    await findUserById(id);
+
+    await deleteUser(id);
+
+    res.writeHead(204);
+    res.end();
+
+    console.log(`\x1b[42m User with ID ${id} deleted \x1b[0m`);
   } catch (error) {
     if (error instanceof Error && error.message === 'User not found') {
       res.writeHead(404, { 'Content-Type': 'application/json' });
