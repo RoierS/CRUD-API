@@ -1,5 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
-import { addNewUser, getAllUsers } from '../controllers/userController';
+import {
+  addNewUser,
+  getAllUsers,
+  getUserById,
+} from '../controllers/userController';
 
 export const handleRequest = (
   request: IncomingMessage,
@@ -7,6 +11,10 @@ export const handleRequest = (
 ) => {
   const { url, method } = request;
   const urlArray = url?.split('/') || [];
+  const id = urlArray[3];
+
+  console.log(urlArray, 'urlArray');
+  console.log(id, 'id');
 
   switch (true) {
     case method === 'GET' &&
@@ -21,6 +29,13 @@ export const handleRequest = (
       urlArray[2] === 'users' &&
       urlArray.length === 3:
       addNewUser(request, response);
+      break;
+
+    case method === 'GET' &&
+      urlArray[1] === 'api' &&
+      urlArray[2] === 'users' &&
+      urlArray.length === 4:
+      getUserById(response, id);
       break;
 
     default:

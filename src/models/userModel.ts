@@ -7,6 +7,17 @@ export const findAllUsers = () =>
     res(users);
   });
 
+export const findUserById = (id: string) =>
+  new Promise((res, rej) => {
+    const user = users.find((u) => u.id === id);
+
+    if (!user) {
+      rej(new Error('User not found'));
+    }
+
+    res(user);
+  });
+
 export const createUser = (user: Omit<IUser, 'id'>) =>
   new Promise((res) => {
     const newUser = { id: uuid(), ...user };
