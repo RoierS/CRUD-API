@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
-import { getAllUsers } from '../controllers/userController';
+import { addNewUser, getAllUsers } from '../controllers/userController';
 
 export const handleRequest = (
   request: IncomingMessage,
@@ -14,6 +14,13 @@ export const handleRequest = (
       urlArray[2] === 'users' &&
       urlArray.length === 3:
       getAllUsers(response);
+      break;
+
+    case method === 'POST' &&
+      urlArray[1] === 'api' &&
+      urlArray[2] === 'users' &&
+      urlArray.length === 3:
+      addNewUser(request, response);
       break;
 
     default:
