@@ -3,6 +3,7 @@ import {
   addNewUser,
   getAllUsers,
   getUserById,
+  updateUserById,
 } from '../controllers/userController';
 
 export const handleRequest = (
@@ -12,9 +13,6 @@ export const handleRequest = (
   const { url, method } = request;
   const urlArray = url?.split('/') || [];
   const id = urlArray[3];
-
-  console.log(urlArray, 'urlArray');
-  console.log(id, 'id');
 
   switch (true) {
     case method === 'GET' &&
@@ -36,6 +34,13 @@ export const handleRequest = (
       urlArray[2] === 'users' &&
       urlArray.length === 4:
       getUserById(response, id);
+      break;
+
+    case method === 'PUT' &&
+      urlArray[1] === 'api' &&
+      urlArray[2] === 'users' &&
+      urlArray.length === 4:
+      updateUserById(request, response, id);
       break;
 
     default:

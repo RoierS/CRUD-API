@@ -7,15 +7,15 @@ export const findAllUsers = () =>
     res(users);
   });
 
-export const findUserById = (id: string) =>
+export const findUserById = (id: string): Promise<IUser> =>
   new Promise((res, rej) => {
     const user = users.find((u) => u.id === id);
 
     if (!user) {
       rej(new Error('User not found'));
+    } else {
+      res(user);
     }
-
-    res(user);
   });
 
 export const createUser = (user: Omit<IUser, 'id'>) =>
@@ -24,4 +24,16 @@ export const createUser = (user: Omit<IUser, 'id'>) =>
 
     users.push(newUser);
     res(newUser);
+  });
+
+export const updateUser = (id: string, user: Omit<IUser, 'id'>) =>
+  new Promise((res, rej) => {
+    const index = users.findIndex((u) => u.id === id);
+
+    users[index] = { id, ...user };
+
+    if (index === -1) {
+      rej(new Error('User not found'));
+    }
+    res(users[index]);
   });
