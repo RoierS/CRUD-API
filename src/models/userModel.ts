@@ -40,6 +40,7 @@ export const updateUser = (id: string, user: Omit<IUser, 'id'>) =>
 
 export const deleteUser = (id: string): Promise<void> =>
   new Promise((res) => {
-    users.filter((u) => u.id !== id);
+    const index = users.findIndex((u) => u.id === id);
+    users.splice(index, 1);
     res();
   });
